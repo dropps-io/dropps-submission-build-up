@@ -7,8 +7,8 @@ As long as you have a Universal Profile, you have an account in LOOKSO. Other pr
 
 # Other repositories
 
-* [Back-end (private)](https://github.com/dropps-io/dropps-back)
-* [Front-end (private)](https://github.com/dropps-io/lookso)
+* [Back-end (private)](https://github.com/dropps-io/dropps-back/tree/lukso-hackathon)
+* [Front-end (private)](https://github.com/dropps-io/lookso/tree/lukso-hackathon)
 
 
 # Quick Reference
