@@ -1,8 +1,8 @@
 # Collaborators & Social Media
 
-* Samuel Videau<samuel@dropps.io>
-* António Pedro Silva<antonio@dropps.io>
-* Carlos Caldas<carlos@dropps.io>
+* Samuel Videau <samuel@dropps.io>
+* António Pedro Silva <antonio@dropps.io>
+* Carlos Caldas <carlos@dropps.io>
 
 * https://dropps.io
 * https://twitter.com/dropps_io
