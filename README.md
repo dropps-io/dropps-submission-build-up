@@ -14,9 +14,8 @@ As long as you have a Universal Profile, you have an account in LOOKSO. Other pr
 # Quick Reference
 
 * [Website](https://lookso.io)
-* [API Docs](https://api.lookso.io/documentation/static/index.html)
-* [LIP-social_media_feed](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-social_media_feed.md)
-* [LIP-timestamp_registry](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-timestamp_registry.md)
+* [LIP-social_media_feed](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-social_media_feed.md)
+* [LIP-validator](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-validator.md)
 * Youtube Video
 
 # Architecure
@@ -29,9 +28,9 @@ The [record](#Social Media Record File) is the only thing saved on the user's UP
 
 ![LOOKSO Architecture Overview](docs/img/arch_overview.jpg)
 
-There is a third actor whose role is to provide a reliable timestamp for the messages in the network. It is a [timestamp registry](#timestamp_registry) smart contract on the LUKSO blockchain and can be called to append a timestamp to the message hash and save it in its own [ERC725Y](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md#erc725y) storage for future validation.
+There is a third actor whose role is to provide a reliable method to authenticate messages authors, just like a signature would do for EOAs, and to validate the timestamp for the messages in the network. It is a [validator](#validator) smart contract on the LUKSO blockchain and can be called to append the msg.sender and the current block timestamp to the message hash and save it in its own [ERC725Y](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-725.md#erc725y) storage for future validation.
 
-All the data is indexed in a local database and served as an [API](https://api.lookso.io/documentation/static/index.html) to speed up and simplify the queries necessary to provide a consistent and fast user experience. 
+All the data is indexed in a local database and served as an API to speed up and simplify the queries necessary to provide a consistent and fast user experience. 
 
 
 ## Blockchain
@@ -87,9 +86,9 @@ contract Validator is ERC725YCore(), Context {
 }
 ```
 
-This is a generic contract that provides a validating service for any kind of message. Because this contract cannot prove authenticity by signing a message, the validator saves the message hash in its own storage, alongside the timestamp and the original sender. Anyone can use this registry to store their claims and attest authenticity their creation date. For more information, check [LIP-VALIDATOR](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-claim_registry.md).
+This is a generic contract that provides a validating service for any kind of message. Because this contract cannot prove authenticity by signing a message, the validator saves the message hash in its own storage, alongside the timestamp and the original sender. Anyone can use this registry to store their claims and attest authenticity their creation date. For more information, check [LIP-VALIDATOR](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-validator.md).
 
-For the LOOKSO project, we extended the timestamping service with the capability to write to the LSPXXSocialRegistry key on the Universal Profile. This was done for the convenience of bundling two tasks in a single transaction and avoiding extra costs for the user. The message hash is sent for validation alongside the social record that includes it. The message hash is timestamped and the social record URL written on the Universal Profile. 
+For the LOOKSO project, we extended the validating service with the capability to write to the LSPXXSocialRegistry key on the Universal Profile. This was done for the convenience of bundling two tasks in a single transaction and avoiding extra costs for the user. The message hash is sent for validation alongside the social record that includes it. The message hash is stored and the social record URL written on the Universal Profile. 
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -110,7 +109,6 @@ contract LooksoPostValidator is Validator {
     constructor() Validator() {}
 
     function post(bytes32 postHash, bytes calldata jsonUrl) public {
-        // Saves timestamp on mapping. Writes to storage (bytes32)
         this.validate(postHash);
         //Update the registry in the UP
         require(ERC165Checker.supportsERC165(_msgSender()), "Sender must implement ERC165. A UP does.");
