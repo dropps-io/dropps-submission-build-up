@@ -87,7 +87,7 @@ contract Validator is ERC725YCore(), Context {
 }
 ```
 
-This is a generic contract that provides a timestamping service for any kind of message. Because this contract cannot sign a message attesting the timestamp provided, instead it saves the message hash in its own storage, alongside the timestamp and the original sender. Anyone can use this registry to store their claims and attest their creation date. For more information, check [LIP-Claim_Registry](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-claim_registry.md).
+This is a generic contract that provides a validating service for any kind of message. Because this contract cannot prove authenticity by signing a message, the validator saves the message hash in its own storage, alongside the timestamp and the original sender. Anyone can use this registry to store their claims and attest authenticity their creation date. For more information, check [LIP-VALIDATOR](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-claim_registry.md).
 
 For the LOOKSO project, we extended the timestamping service with the capability to write to the LSPXXSocialRegistry key on the Universal Profile. This was done for the convenience of bundling two tasks in a single transaction and avoiding extra costs for the user. The message hash is sent for validation alongside the social record that includes it. The message hash is timestamped and the social record URL written on the Universal Profile. 
 

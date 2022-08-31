@@ -1,6 +1,6 @@
 ---
 lip: XX
-title: Timestamp Registry
+title: Validator
 status: Draft
 type: Standards Track LSP
 author: Samuel Videau <samuel@dropps.io>, António Pedro <antonio@dropps.io>
@@ -10,7 +10,7 @@ requires: ERC725Y
 
 ## Simple Summary
 
-This standard defines a timestamp registry smart contract where any address (contract or external account) can store proof that it knew some information at a given point in time.
+This standard defines a validator smart contract where any address (contract or external account) can store proof that it knew some information at a given point in time.
 
 ## Abstract
 
