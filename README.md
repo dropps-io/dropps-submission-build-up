@@ -1,3 +1,15 @@
+# Collaborators & Social Media
+
+Samuel Videau<samuel@dropps.io>
+António Pedro Silva<antonio@dropps.io>
+Carlos Caldas<carlos@dropps.io>
+
+https://dropps.io
+https://twitter.com/dropps_io
+https://discord.gg/nzn3BGHyYH
+
+Ethereum address: 0x053C7c6bC6d4A47DAD5A2DE8AF6d2aA870B95168
+
 # What is [LOOKSO](https://lookso.io) ![LOOKSO logo](docs/img/LOOKSO_logo.jpg)
 
 
@@ -16,7 +28,7 @@ As long as you have a Universal Profile, you have an account in LOOKSO. Other pr
 * [Website](https://lookso.io)
 * [LIP-social_media_feed](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-social_media_feed.md)
 * [LIP-validator](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-validator.md)
-* Youtube Video
+* [Youtube Video](https://youtu.be/lNljYm68qHI)
 
 # Architecure
 
