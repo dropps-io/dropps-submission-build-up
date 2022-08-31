@@ -37,7 +37,7 @@ All the data is indexed in a local database and served as an [API](https://api.l
 ## Blockchain
 
 
-### The Timestamp Registry Contract
+### The Validator Contract
 
 ```solidity
 // SPDX-License-Identifier: MIT
