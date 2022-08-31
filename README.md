@@ -1,12 +1,12 @@
 # Collaborators & Social Media
 
-Samuel Videau<samuel@dropps.io>
-António Pedro Silva<antonio@dropps.io>
-Carlos Caldas<carlos@dropps.io>
+* Samuel Videau<samuel@dropps.io>
+* António Pedro Silva<antonio@dropps.io>
+* Carlos Caldas<carlos@dropps.io>
 
-https://dropps.io
-https://twitter.com/dropps_io
-https://discord.gg/nzn3BGHyYH
+* https://dropps.io
+* https://twitter.com/dropps_io
+* https://discord.gg/nzn3BGHyYH
 
 Ethereum address: 0x053C7c6bC6d4A47DAD5A2DE8AF6d2aA870B95168
 
