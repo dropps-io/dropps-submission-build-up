@@ -1,12 +1,13 @@
 # Collaborators & Social Media
 
-* Samuel Videau <samuel@dropps.io>
-* António Pedro Silva <antonio@dropps.io>
-* Carlos Caldas <carlos@dropps.io>
-
-* https://dropps.io
-* https://twitter.com/dropps_io
-* https://discord.gg/nzn3BGHyYH
+| Name | Description |
+| ---- | ----------- |
+| Project | LOOKSO |
+| Team | Samuel Videau, Carlos Caldas, António Pedro Silva |
+| Email | samuel@dropps.io, carlos@dropps.io, antonio@dropps.io |
+| App | https://lookso.io |
+| Code | [Frontend (private)](https://github.com/dropps-io/lookso/tree/lukso-hackathon), [Backend (private)](https://github.com/dropps-io/dropps-back/tree/lukso-hackathon), [Contracts](https://github.com/dropps-io/dropps-submission-build-up/tree/main/contracts)  |
+| Find us | [Website](https://dropps.io), [Twitter](https://twitter.com/dropps_io), [Discord](https://discord.gg/nzn3BGHyYH) |
 
 Ethereum address: 0x053C7c6bC6d4A47DAD5A2DE8AF6d2aA870B95168
 
