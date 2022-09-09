@@ -136,7 +136,7 @@ contract LooksoPostValidator is Validator {
 }
 ```
 
-For more details on the format of the Social Media Record being pointed by the JSON Url, please refer to [LIP-social_media_feed](https://github.com/dropps-nft/Lookso/blob/main/LIPs/lip-social_media_feed.md).
+For more details on the format of the Social Media Record being pointed by the JSON Url, please refer to [LIP-social_media_feed](https://github.com/dropps-io/dropps-submission-build-up/blob/main/LIPs/lip-social_media_feed.md).
 
 
 ## Event scraping and translation
