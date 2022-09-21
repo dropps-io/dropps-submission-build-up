@@ -13,6 +13,7 @@ import { OwnableUnset } from "@erc725/smart-contracts/contracts/custom/OwnableUn
 contract Validator is ERC725YCore(), Context {
 
     constructor() {
+        _setOwner(address(0));
     }
 
     /**

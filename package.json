@@ -14,8 +14,11 @@
     "dotenv": "^16.0.2"
   },
   "devDependencies": {
+    "@erc725/erc725.js": "^0.15.0",
+    "@lukso/lsp-factory.js": "^2.4.0",
     "@lukso/lsp-smart-contracts": "^0.6.2",
     "@openzeppelin/contracts": "^4.7.3",
-    "hardhat": "^2.10.2"
+    "hardhat": "^2.10.2",
+    "isomorphic-fetch": "^3.0.0"
   }
 }

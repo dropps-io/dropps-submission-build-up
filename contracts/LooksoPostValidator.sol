@@ -19,13 +19,13 @@ contract LooksoPostValidator is Validator {
 
     bytes32 public constant REGISTRY_KEY = keccak256("LSPXXSocialRegistry");
 
-    constructor(address owner) Validator(owner) {}
+    constructor() Validator() {}
 
     /**
     * @notice Universal Profile (message sender) makes a post
     * @dev This contract must have permissions to write on the Universal Profile
     * @param postHash Will be used as key in this contract's mapping
-    * @param jsonurl Reference to the latest Social Media Record of the sender
+    * @param jsonUrl Reference to the latest Social Media Record of the sender
     */
     function post(bytes32 postHash, bytes calldata jsonUrl) public {
         // Save block.timestamp and msgSender().address under the key "postHash" in mapping.
