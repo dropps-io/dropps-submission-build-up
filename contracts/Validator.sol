@@ -33,7 +33,7 @@ contract Validator is ERC725YCore(), Context {
     */
     function setData(bytes32 dataKey, bytes memory dataValue) public virtual override {
         require(getData(dataKey).length == 0, 
-            "Corresponding value for this hash is not null. Content has been added under this hash before.");
+            "Provided hash already maps to a non-null value.");
         _setData(dataKey, dataValue);
     }
 

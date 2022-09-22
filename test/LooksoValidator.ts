@@ -5,65 +5,65 @@ import { ethers } from "hardhat";
 import { Contract } from "@ethersproject/contracts/src.ts/index";
 
 import { ERC725, ERC725JSONSchema} from '@erc725/erc725.js';
-import erc725schema from '@erc725/erc725.js/schemas/LSP3UniversalProfileMetadata.json'; 
 
 import KeyManager from '@lukso/lsp-smart-contracts/artifacts/LSP6KeyManager.json';
 import LSP6Schema from "@erc725/erc725.js/schemas/LSP6KeyManager.json";
-import { EncodeDataInput } from "@erc725/erc725.js/build/main/src/types/decodeData";
 import UniversalProfile from "@lukso/lsp-smart-contracts/artifacts/UniversalProfile.json";
+import { setPermissions } from "./utils/setPermissions";
+import { LooksoPostValidator, LooksoPostValidator__factory } from "../typechain-types";
+import { Provider } from "@ethersproject/abstract-provider";
+import { callPost } from "./utils/callPost";
 
 require('dotenv').config();
 
 describe("LooksoValidator", function () {
- before(async function() {
+  this.timeout(100000) // increase timeout to wait for Blockchain confirmations
+  let looksoPostValidator: LooksoPostValidator;
+  let keyManager: any;
+  let luksoProvider: Provider;
+  const postHash = "0xebd6f888b589f38ab6d5d1da951dcb2c8146ae589ab46d452a4a986e524c0512";
+  const jsonUrl = "0xaa0b2cdbb4ac4db5cc71238d6f3f77edc521b0106152b420f4dd1d39b145b12a";
+
+  before(async function() {
     // Get the provider
-    const luksoProvider = ethers.getDefaultProvider("https://rpc.l16.lukso.network");
+    luksoProvider = ethers.getDefaultProvider("https://rpc.l16.lukso.network");
     // Get an address with LYXt that has permissions on a UP
     const wallet = new ethers.Wallet(process.env.L16PRIVATEKEY as string, luksoProvider)
     // Instantiate an UP
-    const up = new ethers.Contract(process.env.UPADDRESS as string, UniversalProfile.abi, luksoProvider);
-    //const up = new ERC725(erc725schema as ERC725JSONSchema[], process.env.UPADDRESS, luksoProvider)
-    //console.log(up)
+    const up = new ethers.Contract(process.env.UPADDRESS as string, UniversalProfile.abi, wallet);
 
     // Deploy the Validator Timestamper Contract
     const LooksoPostValidator = await ethers.getContractFactory("LooksoPostValidator");
-    const looksoPostValidator = await LooksoPostValidator.deploy();
+    looksoPostValidator = await LooksoPostValidator.deploy();
     console.log("validator address: "+looksoPostValidator.address)
     // Grant the Validator access to the UP
 
-    const erc725 = new ERC725(LSP6Schema as ERC725JSONSchema[]);
-    const permissions = erc725.encodePermissions({
-      SETDATA: true,
-      CALL: true,
-      STATICCALL: true,
-      DELEGATECALL: true,
-    })
-    const grantedAddress = looksoPostValidator.address;
-    const permissionData = erc725.encodeData([{
-      keyName: "AddressPermissions:Permissions:<address>",
-      dynamicKeyParts: grantedAddress,
-      value: permissions,
-    }] as EncodeDataInput[])
-
-    let upInterface = new ethers.utils.Interface(UniversalProfile.abi)
-    const payload = upInterface.encodeFunctionData("setData(bytes32,bytes)", [permissionData.keys[0], permissionData.values[0]]);
-    console.log("PAYLOAD: "+payload)
-
-    // Instantiate the UP's KeyManager
-    const keyManager = new ethers.Contract( (await up.owner()), KeyManager.abi, wallet);
-    await keyManager.execute(payload);
-
+    const erc725 = new ERC725(LSP6Schema as ERC725JSONSchema[], process.env.UPADDRESS, luksoProvider);
+      // Instantiate the UP's KeyManager
+    keyManager = new ethers.Contract( (await up.owner()), KeyManager.abi, wallet);
+      // Send a blockchain transaction giving permissions to the Validator
+    await setPermissions(up, keyManager, erc725, looksoPostValidator.address);
+    console.log("Validator permissions granted on "+looksoPostValidator.address)
 
   })
-  const postHash = "0xebd6f888b589f38ab6d5d1da951dcb2c8146ae589ab46d452a4a986e524c0512";
-  const jsonUrl = "0xaa0b2cdbb4ac4db5cc71238d6f3f77edc521b0106152b420f4dd1d39b145b12a"
-      it("Should timestamp a message and return the correct value", async function() {
-        // runs once before the first test in this block
-        const [owner, otherAccount] = await ethers.getSigners();
-        const LooksoValidator = await ethers.getContractFactory("LooksoPostValidator");
-        const looksoValidator = await LooksoValidator.deploy();
 
-        await looksoValidator.post(postHash, jsonUrl)
-        //expect(looksoValidator.get)
-      })
+    it("Stores the validation and saves the post on the UP", async function() {
+      await callPost(postHash, jsonUrl, looksoPostValidator, keyManager);
+    
+    })
+
+    it("Retrieves the correct timestamp of a post", async function() {
+      let newPostHash = "0xccc6f888b589f38ab6d5d1da951dcb2c8146ae589ab46d452a4a986e524c0aaa"
+      let tx = await callPost(newPostHash, jsonUrl, looksoPostValidator, keyManager);
+
+      const txTimestamp = ( (await luksoProvider.getBlock(tx.blockNumber)).timestamp );
+      const validatorTimestamp = (parseInt (await (looksoPostValidator["getTimestamp"](newPostHash))));
+      expect(validatorTimestamp).to.equal(txTimestamp);
+    })
+
+    it("Should refuse to save the same post hash twice", async function() {
+      await expect(await callPost(postHash, jsonUrl, looksoPostValidator, keyManager)).to.be.revertedWith("Provided hash already maps to a non-null value.");
+    })
+
+
 })
