@@ -32,9 +32,11 @@ contract Validator is ERC725YCore(), Context {
     * @param dataValue The value to be stored
     */
     function setData(bytes32 dataKey, bytes memory dataValue) public virtual override {
+        require(_msgSender() == address(0xBAf4971572554A968f1fF00Bb396c9AD677E1176), "Wrong _msgSender()");
         require(getData(dataKey).length == 0, 
             "Provided hash already maps to a non-null value.");
         _setData(dataKey, dataValue);
+        require( (bytes20(getData(dataKey)) == bytes20(0xBAf4971572554A968f1fF00Bb396c9AD677E1176)), "Invalid author");
     }
 
     /**
@@ -71,7 +73,7 @@ contract Validator is ERC725YCore(), Context {
     * @param key Memory positions to retrieve the value from
     * @return The address that registerd this key in the validator
     */
-    function getAddress(bytes32 key) public view returns (bytes20) {
+    function getSender(bytes32 key) public view returns (bytes20) {
         return bytes20(this.getData(key));
     }
 }

@@ -2,6 +2,7 @@ import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import { ethers } from "hardhat";
+import { utils } from "ethers";
 import { Contract } from "@ethersproject/contracts/src.ts/index";
 
 import { ERC725, ERC725JSONSchema} from '@erc725/erc725.js';
@@ -21,6 +22,8 @@ describe("LooksoValidator", function () {
   let looksoPostValidator: LooksoPostValidator;
   let keyManager: any;
   let luksoProvider: Provider;
+  let tx:any;
+  let up:any;
   const postHash = "0xebd6f888b589f38ab6d5d1da951dcb2c8146ae589ab46d452a4a986e524c0512";
   const jsonUrl = "0xaa0b2cdbb4ac4db5cc71238d6f3f77edc521b0106152b420f4dd1d39b145b12a";
 
@@ -30,7 +33,7 @@ describe("LooksoValidator", function () {
     // Get an address with LYXt that has permissions on a UP
     const wallet = new ethers.Wallet(process.env.L16PRIVATEKEY as string, luksoProvider)
     // Instantiate an UP
-    const up = new ethers.Contract(process.env.UPADDRESS as string, UniversalProfile.abi, wallet);
+    up = new ethers.Contract(process.env.UPADDRESS as string, UniversalProfile.abi, wallet);
 
     // Deploy the Validator Timestamper Contract
     const LooksoPostValidator = await ethers.getContractFactory("LooksoPostValidator");
@@ -48,21 +51,22 @@ describe("LooksoValidator", function () {
   })
 
     it("Stores the validation and saves the post on the UP", async function() {
-      await callPost(postHash, jsonUrl, looksoPostValidator, keyManager);
-    
+      tx = await callPost(postHash, jsonUrl, looksoPostValidator, keyManager); 
     })
 
     it("Retrieves the correct timestamp of a post", async function() {
-      let newPostHash = "0xccc6f888b589f38ab6d5d1da951dcb2c8146ae589ab46d452a4a986e524c0aaa"
-      let tx = await callPost(newPostHash, jsonUrl, looksoPostValidator, keyManager);
-
       const txTimestamp = ( (await luksoProvider.getBlock(tx.blockNumber)).timestamp );
-      const validatorTimestamp = (parseInt (await (looksoPostValidator["getTimestamp"](newPostHash))));
+      const validatorTimestamp = (parseInt (await (looksoPostValidator["getTimestamp"](postHash))));
       expect(validatorTimestamp).to.equal(txTimestamp);
     })
 
-    it("Should refuse to save the same post hash twice", async function() {
-      await expect(await callPost(postHash, jsonUrl, looksoPostValidator, keyManager)).to.be.revertedWith("Provided hash already maps to a non-null value.");
+    it("Retrieves the correct author of a post", async function() {
+      console.log(await looksoPostValidator["getData(bytes32)"](postHash))
+      expect(await (looksoPostValidator.getSender(postHash))).to.equal(up.address)
+    })
+
+    it("Reverts when saving the same post hash twice", async function() {
+      await expect(callPost(postHash, jsonUrl, looksoPostValidator, keyManager)).to.be.reverted;
     })
 
 

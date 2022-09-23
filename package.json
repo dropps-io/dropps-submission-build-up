@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
-    "dotenv": "^16.0.2"
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "dotenv": "^16.0.2",
+    "remove": "^0.1.5"
   },
   "devDependencies": {
     "@erc725/erc725.js": "^0.15.0",
