@@ -21,6 +21,7 @@
     "@lukso/lsp-smart-contracts": "^0.6.2",
     "@openzeppelin/contracts": "^4.7.3",
     "hardhat": "^2.10.2",
-    "isomorphic-fetch": "^3.0.0"
+    "isomorphic-fetch": "^3.0.0",
+    "web3": "^1.8.0"
   }
 }

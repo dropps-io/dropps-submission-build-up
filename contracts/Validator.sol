@@ -6,6 +6,8 @@ import { Context } from "@openzeppelin/contracts/utils/Context.sol";
 import { ERC725YCore } from "@erc725/smart-contracts/contracts/ERC725YCore.sol";
 import { OwnableUnset } from "@erc725/smart-contracts/contracts/custom/OwnableUnset.sol";
 
+import "hardhat/console.sol";
+
 /// @title A validator for hash values
 /// @author https://lookso.io
 /// @notice Acts as a registry that contains proof of authorship and creation date
@@ -21,7 +23,7 @@ contract Validator is ERC725YCore(), Context {
     * @dev Uses block.timestamp to set a date and msgSender to set the address
     * @param contentHash A hash value to validate
     */ 
-    function validate(bytes32 contentHash) external {
+    function validate(bytes32 contentHash) public {
         setData(contentHash, bytes(abi.encodePacked(address(_msgSender()), bytes12(uint96(block.timestamp)))));
     }
 
@@ -32,11 +34,9 @@ contract Validator is ERC725YCore(), Context {
     * @param dataValue The value to be stored
     */
     function setData(bytes32 dataKey, bytes memory dataValue) public virtual override {
-        require(_msgSender() == address(0xBAf4971572554A968f1fF00Bb396c9AD677E1176), "Wrong _msgSender()");
         require(getData(dataKey).length == 0, 
             "Provided hash already maps to a non-null value.");
         _setData(dataKey, dataValue);
-        require( (bytes20(getData(dataKey)) == bytes20(0xBAf4971572554A968f1fF00Bb396c9AD677E1176)), "Invalid author");
     }
 
     /**

@@ -9,6 +9,8 @@ import { ERC165Checker } from "@openzeppelin/contracts/utils/introspection/ERC16
 import { ILSP6KeyManager} from "@lukso/lsp-smart-contracts/contracts/LSP6KeyManager/ILSP6KeyManager.sol";
 import { Validator } from "./Validator.sol";
 
+import "hardhat/console.sol";
+
 /**
 * @title LOOKSO post validator
 * @notice A validator tailored for Universal Profiles and content publishing
@@ -29,7 +31,7 @@ contract LooksoPostValidator is Validator {
     */
     function post(bytes32 postHash, bytes calldata jsonUrl) public {
         // Save block.timestamp and msgSender().address under the key "postHash" in mapping.
-        this.validate(postHash);
+        validate(postHash);
         //Update the registry reference in the UP
         //// Verify sender supports the IERC725Y standard
         require(ERC165Checker.supportsERC165(_msgSender()), "Sender must implement ERC165. A UP does.");

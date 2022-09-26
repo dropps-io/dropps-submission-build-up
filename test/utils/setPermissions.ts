@@ -31,27 +31,8 @@ export async function setPermissions(up:any, keyManager:any, erc725:any, granted
     // Final: Send the transaction through the KeyManager
     let upInterface = new ethers.utils.Interface(UniversalProfile.abi)
     const payload = upInterface.encodeFunctionData("setData(bytes32[],bytes[])", [keys, values]);
-    await (await keyManager.execute(payload)).wait(5);
+    await (await keyManager.execute(payload)).wait(1);
 
     return;
-    /*
-    // Fetch permissions array length
-    let permissionsLength = (await this.getDataUnverified([permissionsArrayKey]))[0];
-    // Give permissions
-    let keys:string[] = [];
-    let values:string[] = [];
-      // 1. Updates AddressPermissions[] length
-      keys.push(ethers.utils.keccak256("AddressPermissions[]"));
-      values.push(newLengthPadded);
-      // 2. Updates AddressPermissions[i] value
-      keys.push(utils.keccak256("AddressPermissions[]").slice(0,34) + paddedIndex.slice(2));
-      values.push(address);
-      // 3. Updates address permissions in the mapping
-      keys = keys.concat(permissionsData.keys);
-      values = values.concat(permissionsData.values);
-      console.log(keys);
-      console.log(values)
-      await this._contract.methods.setData(keys, values).send({from: this._eoa}); 
-    console.log( (await (await keyManager.execute(payload)).wait()) ); 
-    */
+
 }

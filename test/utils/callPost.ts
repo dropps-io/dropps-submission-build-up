@@ -8,9 +8,9 @@ export async function callPost(postHash:string, jsonUrl:string, validatorContrac
     const upPayload = upInterface.encodeFunctionData("execute(uint256,address,uint256,bytes)", [0, validatorContract.address,0,validatorPayload]);
     // runs once before the first test in this block
     try {
-        let tx = await (await keyManagerContract.execute(upPayload)).wait(2);
-        console.log("Post submitted to validator successfully");
-        return tx;
+        let tx =  (await keyManagerContract.execute(upPayload));
+        if (tx.chainId == 2828) return await tx.wait(2) // LUKSO L16 Network
+        else return tx;
     } catch (err) {
         throw(err);
     }

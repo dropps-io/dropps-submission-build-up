@@ -9,6 +9,12 @@ const config: HardhatUserConfig = {
   solidity: "0.8.9",
   networks: {
     hardhat: {
+      chainId: 31337,
+      loggingEnabled: true,
+      accounts: [{
+        privateKey: process.env.L16PRIVATEKEY as string, 
+        balance: "100000000000000000000" //100ETH
+      }]
     },
     L16: {
       url: "https://rpc.l16.lukso.network",
